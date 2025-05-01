@@ -86,7 +86,77 @@
 | `#include` | 외부 파일이나 기능을 가져오는 명령 |
 
 ---
+# raylib에서 한글 사용하기
+
+## ✅ 1. 한글이 잘 보이게 소스코드 작성
+
+아래 코드를 그대로 복사해 사용하세요:
+
+```c
+#include "raylib.h"
+
+int main() {
+    InitWindow(800, 450, "한글 출력");
+
+    // ✅ 한글 폰트 로드 (맑은 고딕, 30pt, 전체 글리프)
+    Font font = LoadFontEx("C:\\Windows\\Fonts\\malgun.ttf", 30, NULL, 65535);
+
+    // ✅ UTF-8 문자열로 한글 입력
+    const char* text = u8"안녕하세요";
+
+    SetTargetFPS(60);
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawTextEx(font, text, (Vector2){250, 200}, 30, 2, BLACK);
+        EndDrawing();
+    }
+
+    UnloadFont(font);
+    CloseWindow();
+    return 0;
+}
+```
+
+---
+
+## ✅ 2. 소스코드 저장 방법 (UTF-8로 저장해야 한글이 안 깨짐!)
+
+1. `파일 > 다른 이름으로 저장`
+2. 저장 버튼 오른쪽의 **▼ (역삼각형)** 클릭
+3. `인코딩으로 저장` 선택
+4. 아래 항목으로 저장:
+   - **인코딩**: `유니코드(서명 있는 UTF-8)` 또는 `UTF-8 with BOM`
+   - **줄 끝**: `Windows (CR LF)`
+
+---
+
+## ✅ 3. 프로젝트 설정 (추가로 하면 더 안전)
+
+1. `프로젝트 > 속성 > C/C++ > 명령줄`
+2. `추가 옵션`에 아래 추가:
+
+```
+/utf-8
+```
+
+---
+
+## ✅ 5. 결과
+
+화면 중앙에 **“안녕하세요”** 라는 텍스트가 정확히 출력됩니다!
+
+---
+
+## 🎯 참고
+
+- 폰트 파일은 `C:\Windows\Fonts\malgun.ttf` 외에도 `batang.ttc`, `gulim.ttc` 등 사용 가능
+- 반드시 `DrawTextEx()` 함수 사용
+- `DrawText()`는 ASCII 전용이라 한글 지원 불가
+
+---
+
 
 🎯 계속 참고하면서, 헷갈릴 때마다 찾아보세요!  
 이 부록은 여러분의 **프로그래밍 길잡이**가 되어줄 거예요. 🧭
-```
+
